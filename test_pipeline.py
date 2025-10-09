@@ -1,7 +1,6 @@
 import unittest
 import pandas as pd
-from pipline import split_scale  # ton fichier pipeline.py
-
+from pipline import split_scale  
 class TestPipeline(unittest.TestCase):
 
     def setUp(self):
