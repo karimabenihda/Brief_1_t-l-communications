@@ -1,6 +1,6 @@
 #Tableau récapitulatif des performances des modèles :#
 
-|Model                 |accuracy|precision_score |recall_score|f1_score|roc_auc_score  |ROC         |matrice confusion  |
+|Model                 |accuracy|precision_score |recall_score|f1_score|roc_auc_score  |ROC                                       |matrice confusion                       |
 |----------------------|--------|----------------|------------|--------|---------------|------------|---------------|
 |##SVC##               |0.816   |0.68            |0.57        |0.62    |0.60           |<img src="SVC/courbe_roc.png" width="150"/>|<img src="SVC/matrice_confusion.png" width="150"/>       |
 |----------------------|--------|----------------|------------|--------|---------------|------------|---------------|
