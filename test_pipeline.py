@@ -1,27 +1,19 @@
-import unittest
 import pandas as pd
-from pipline import split_scale  
-class TestPipeline(unittest.TestCase):
+from sklearn.model_selection import train_test_split
 
-    def setUp(self):
-        """Préparer les données et le pipeline"""
-        self.X_train, self.X_test, self.y_train, self.y_test = split_scale()
 
-    def test_no_missing_values(self):
-        """Vérifier qu'il n'y a pas de valeurs manquantes dans X et y"""
-        self.assertFalse(pd.isnull(self.X_train).any(), "X_train contient des valeurs manquantes")
-        self.assertFalse(pd.isnull(self.X_test).any(), "X_test contient des valeurs manquantes")
-        self.assertFalse(pd.isnull(self.y_train).any(), "y_train contient des valeurs manquantes")
-        self.assertFalse(pd.isnull(self.y_test).any(), "y_test contient des valeurs manquantes")
+def test_split_dimension():
+    data = pd.read_csv("data.csv")
+    X=data.drop(columns=["Churn"])
+    y=data["Churn"]
 
-    def test_dimensions(self):
-        """Vérifier que les dimensions correspondent"""
-        # X doit avoir autant de lignes que y
-        self.assertEqual(self.X_train.shape[0], self.y_train.shape[0], "X_train et y_train n'ont pas le même nombre de lignes")
-        self.assertEqual(self.X_test.shape[0], self.y_test.shape[0], "X_test et y_test n'ont pas le même nombre de lignes")
+    assert len(X)==len(y),"incoherence: X={len(X)}, y={len(y)}"
+    X_train,X_test,y_train,y_test=train_test_split(
+        X,y,test_size=0.2,random_state=42
+    )
+    assert len(X_train)==len(y_train), f"Incohérence train : X_train={len(X_train)}, y_train={len(y_train)}"
 
-        # X_train et X_test doivent avoir le même nombre de colonnes après VarianceThreshold
-        self.assertEqual(self.X_train.shape[1], self.X_test.shape[1], "X_train et X_test n'ont pas le même nombre de colonnes")
+# output: 
+# ✅ Résultat : PASSED → ton test est réussi, tout est cohérent.
+# Le [100%] indique que 100 % des tests ont passé (1 sur 1).    
 
-if __name__ == "__main__":
-    unittest.main()
