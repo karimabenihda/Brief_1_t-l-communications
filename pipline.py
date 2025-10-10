@@ -11,8 +11,6 @@ from sklearn.metrics import (
     accuracy_score,confusion_matrix,classification_report,confusion_matrix,ConfusionMatrixDisplay,precision_score,recall_score,f1_score,
     roc_curve,precision_recall_curve,roc_auc_score
 )
-import xgboost as xgb
-import pickle
 from sklearn.svm import SVC
 
 def load_data():
@@ -37,11 +35,6 @@ def Normalisation():
         data[col] = encoder.fit_transform(data[col])
 
 
-# def split_scale():
-#     Normalisation()
-    # data = pd.read_csv("data_clean.csv")
-    # print(data.dtypes)
-
     X = data.drop(columns=['Churn','customerID'])
     y = data['Churn']
     # print(X.columns)
@@ -52,12 +45,10 @@ def Normalisation():
     # # print(X_train_scaled)
     X_test_scaled=scaler.fit_transform(X_test.select_dtypes(include=['int64','float64']))
     
-    # # print(X_test_scaled)
     # VarianceThreshold remove the columns that do not vary much 
     # selector=VarianceThreshold(threshold=0.01)
     # X_reduced=selector.fit_transform(X_train_scaled)
-    # print(X_reduced)
-    
+     
     # model=RandomForestClassifier()
     # model=SVC(kernel="linear",probability=True)
     model=LogisticRegression( max_iter=2000,     
@@ -97,47 +88,5 @@ def Normalisation():
     plt.show()
 
 Normalisation()
-
-
-
-    # print(" X_train_scaled shape:", X_train_scaled.shape)
-    # print(" X_test_scaled shape:", X_test_scaled.shape)
-    # print(" y_train shape:", y_train.shape)
-    # print(" y_test shape:", y_test.shape)
-# XGBClassifier
-
-    # xgb_model=xgb.XGBClassifier(
-    # n_estimators=100,
-    # learning_rate=0.1,
-    # max_depth=5,
-    # random_state=42,
-    # eval_metric='logloss'
-    # )
-
-    # xgb_model.fit(X_train_scaled,y_train)
-    # with open("model.pkl","wb") as file:
-    #     pickle.dump(xgb_model,file)
-
-    # with open("model.pkl", "rb") as file:
-    #     loaded_model = pickle.load(file)
-    # y_pred = loaded_model.predict(X_test)
-
-    # y_pred=xgb_model.predict(X_test_scaled)
-    # print("accuracy: ",accuracy_score(y_test,y_pred))
-    #     # output: accuracy:  0.815471965933286
-    # print(confusion_matrix(y_test,y_pred))
-    #     # output: [[933 103][157 216]]
-    # print(classification_report(y_test,y_pred))
-
-    # scores=cross_val_score(xgb_model,X_train,y_train,cv=5,scoring='accuracy')
-    # print("scores:",scores)
-
-    # a=confusion_matrix(y_test,y_pred)
-    # print(a)
-    # disp=ConfusionMatrixDisplay(confusion_matrix=a,display_labels=["No","Yes"])
-    # disp.plot(cmap="Blues")
-    # plt.title('matrice de confusion ')
-    # # plt.show()
-
 
 

@@ -38,7 +38,6 @@
 
 
 
-
 **Tableau récapitulatif des performances des modèles :**
 
 |Model                 |accuracy|precision_score |recall_score|f1_score|roc_auc_score  |ROC         |matrice confusion  |
