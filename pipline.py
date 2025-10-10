@@ -19,6 +19,7 @@ def load_data():
     return data
 data=load_data()
 
+
 def data_encode(data):
     encoder = LabelEncoder()
     cols = [
@@ -54,6 +55,7 @@ def scale_data(X_train, X_test):
 
 X_train_scaled,X_test_scaled=scale_data(X_train, X_test)    
 
+
 def train_model(X_train_scaled,y_train):
     # model=RandomForestClassifier()
     # model=SVC(kernel="linear",probability=True)
@@ -81,6 +83,7 @@ def evaluer_model(model,X_test_scaled,X_test,y_test):
 
 y_pred,y_proba=evaluer_model(model,X_test_scaled,X_test,y_test)
 
+
 # matrice de confusion:
 def matrice_confusion(y_test,y_pred):
     a=confusion_matrix(y_test,y_pred)
@@ -90,6 +93,7 @@ def matrice_confusion(y_test,y_pred):
     plt.title('matrice de confusion ')
     plt.show()
 y_pred=matrice_confusion(y_test,y_pred)
+
 
 def ROC_curv(y_test,y_proba):
     fpr,tpr,seuils=roc_curve(y_test,y_proba)
