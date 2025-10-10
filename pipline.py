@@ -15,14 +15,12 @@ from sklearn.svm import SVC
 
 def load_data():
     data = pd.read_csv("data_clean.csv")
-    print({data.shape})
+    print(data.shape)
     return data
-# load_data()
+data=load_data()
 
-def Normalisation(): 
-    data = pd.read_csv("data_clean.csv")
+def data_encode(data):
     encoder = LabelEncoder()
-
     cols = [
         'gender','Partner','Dependents','PhoneService','MultipleLines',
         'InternetService','OnlineSecurity','DeviceProtection','TechSupport',
@@ -33,22 +31,30 @@ def Normalisation():
     # Encode all categorical columns
     for col in cols:
         data[col] = encoder.fit_transform(data[col])
+    return data
+data=data_encode(data)
 
-
+def split_data(data): 
     X = data.drop(columns=['Churn','customerID'])
+    numeric_cols = X.select_dtypes(include=['int64','float64']).columns
+    X_numeric = X[numeric_cols]
     y = data['Churn']
     # print(X.columns)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    return train_test_split(X_numeric, y, test_size=0.2, random_state=42)
 
+X_train, X_test, y_train, y_test=split_data(data)
+
+
+def scale_data(X_train, X_test):
     scaler=MinMaxScaler()
     X_train_scaled=scaler.fit_transform(X_train.select_dtypes(include=['int64','float64']))
     # # print(X_train_scaled)
     X_test_scaled=scaler.fit_transform(X_test.select_dtypes(include=['int64','float64']))
-    
-    # VarianceThreshold remove the columns that do not vary much 
-    # selector=VarianceThreshold(threshold=0.01)
-    # X_reduced=selector.fit_transform(X_train_scaled)
-     
+    return X_train_scaled, X_test_scaled
+
+X_train_scaled,X_test_scaled=scale_data(X_train, X_test)    
+
+def train_model(X_train_scaled,y_train):
     # model=RandomForestClassifier()
     # model=SVC(kernel="linear",probability=True)
     model=LogisticRegression( max_iter=2000,     
@@ -56,10 +62,14 @@ def Normalisation():
     random_state=42)
 
     model.fit(X_train_scaled,y_train)
+    return model
+model=train_model(X_train_scaled,y_train)
 
+
+def evaluer_model(model,X_test_scaled,X_test,y_test):
     y_pred=model.predict(X_test_scaled)
     y_proba=model.predict_proba(X_test)[:,1]
-
+    
     print("accuracy: ",accuracy_score(y_test,y_pred))
     print("confusion_matrix: ",confusion_matrix(y_test,y_pred))
     print("classification_report: ",classification_report(y_test,y_pred))
@@ -67,15 +77,21 @@ def Normalisation():
     print("recall_score: ",recall_score(y_test,y_pred))
     print("f1_score: ",f1_score(y_test,y_pred))
     print("roc_auc_score",roc_auc_score(y_test,y_proba))
+    return y_pred,y_proba
+
+y_pred,y_proba=evaluer_model(model,X_test_scaled,X_test,y_test)
+
 # matrice de confusion:
+def matrice_confusion(y_test,y_pred):
     a=confusion_matrix(y_test,y_pred)
     print(a)
     disp=ConfusionMatrixDisplay(confusion_matrix=a,display_labels=["No","Yes"])
     disp.plot(cmap="Blues")
     plt.title('matrice de confusion ')
     plt.show()
+y_pred=matrice_confusion(y_test,y_pred)
 
-# courbe ROC:
+def ROC_curv(y_test,y_proba):
     fpr,tpr,seuils=roc_curve(y_test,y_proba)
     auc=roc_auc_score(y_test,y_proba)
     plt.figure(figsize=(6,5))
@@ -86,7 +102,9 @@ def Normalisation():
     plt.title("courbe ROC")
     plt.legend()
     plt.show()
+ROC_curv(y_test,y_proba)
+ 
 
-Normalisation()
-
-
+    # VarianceThreshold remove the columns that do not vary much 
+    # selector=VarianceThreshold(threshold=0.01)
+    # X_reduced=selector.fit_transform(X_train_scaled)
