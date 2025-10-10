@@ -1,6 +1,8 @@
 **Prédiction du Churn Client (désabonnement)**
 ***Développer un pipeline complet de Machine Learning supervisé pour prédire le désabonnement des clients dans une entreprise de télécommunications.*** 
 
+**Lien trello: https://trello.com/invite/b/68e39c24c65c2af01440ea36/ATTId82e20b9238e272717fa80f6a5d6bc66C26F1B54/brief1**
+
 **🧩 Étape 1 : Analyse exploratoire des données (EDA)**
 ***Le dataset contient 7043 lignes et 21 colonnes :float64 (2), int64 (2), object (17)***
 
@@ -36,9 +38,8 @@
 ***Tracer un tableau récapitulatif qui décrit la différence entre les trois modèles au niveau des scores, la courbe ROC et la matrice de confusion.***
 
 
-
-
 **Tableau récapitulatif des performances des modèles :**
+
 
 |Model                 |accuracy|precision_score |recall_score|f1_score|roc_auc_score  |ROC         |matrice confusion  |
 |----------------------|--------|----------------|------------|--------|---------------|------------|---------------|
